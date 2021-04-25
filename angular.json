@@ -1,6 +1,7 @@
 {
   "version": 1,
   "cli": {
+    "analytics": false,
     "defaultCollection": "@nrwl/angular"
   },
   "defaultProject": "leaflet-test",
@@ -49,9 +50,19 @@
             "aot": true,
             "assets": [
               "apps/leaflet-test/src/favicon.ico",
-              "apps/leaflet-test/src/assets"
+              "apps/leaflet-test/src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/leaflet/dist/images/",
+                "output": "./assets/"
+              }
             ],
-            "styles": ["apps/leaflet-test/src/styles.scss"],
+            "styles": [
+              "apps/leaflet-test/src/styles.scss",
+              "./node_modules/leaflet/dist/leaflet.css",
+              "./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
+              "./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -112,11 +123,17 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/leaflet-test"],
+          "outputs": [
+            "coverage/apps/leaflet-test"
+          ],
           "options": {
             "jestConfig": "apps/leaflet-test/jest.config.js",
             "passWithNoTests": true
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     },
@@ -141,7 +158,9 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": ["apps/leaflet-test-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/leaflet-test-e2e/**/*.{js,ts}"
+            ]
           }
         }
       }
